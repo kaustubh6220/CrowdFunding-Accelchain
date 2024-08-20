@@ -6,10 +6,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '../ui
 import Image from 'next/image';
 import { AiFillProfile } from 'react-icons/ai';
 import { UserIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Campagins = () => {
-  const campaginData = useState('')
-  const handleCardClick=(title:string,description:string,imageURL:string,daysLeft:string,by:string,amountToRaise:string, amountraised:string)=>{
+  const router= useRouter()
+  const handleCardClick=()=>{
+    router.push('/campagins/abc')
     
   }
 
@@ -18,7 +20,7 @@ const Campagins = () => {
       {campaginlinks.map((campaign, index) => (
         <Card
         onClick={(e)=>
-          handleCardClick(campaign.title,campaign.description,campaign.imageURL,campaign.daysLeft,campaign.by,campaign.amountToRaise,campaign.amountraised)
+          handleCardClick()
         }
           key={index}
           className={`bg-slate-800 border-slate-900 rounded-2xl shadow-md w-11/12 m-2 hover:bg-slate-700 ${
