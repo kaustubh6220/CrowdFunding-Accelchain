@@ -1,4 +1,6 @@
-import React from 'react';
+'Use client'
+
+import React, { useState } from 'react';
 import { campaginlinks } from '@/constants';
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '../ui/card';
 import Image from 'next/image';
@@ -6,10 +8,18 @@ import { AiFillProfile } from 'react-icons/ai';
 import { UserIcon } from 'lucide-react';
 
 const Campagins = () => {
+  const campaginData = useState('')
+  const handleCardClick=(title:string,description:string,imageURL:string,daysLeft:string,by:string,amountToRaise:string, amountraised:string)=>{
+    
+  }
+
   return (
     <div className="w-full grid grid-cols-3 mt-8">
       {campaginlinks.map((campaign, index) => (
         <Card
+        onClick={(e)=>
+          handleCardClick(campaign.title,campaign.description,campaign.imageURL,campaign.daysLeft,campaign.by,campaign.amountToRaise,campaign.amountraised)
+        }
           key={index}
           className={`bg-slate-800 border-slate-900 rounded-2xl shadow-md w-11/12 m-2 hover:bg-slate-700 ${
             index % 3 === 0
