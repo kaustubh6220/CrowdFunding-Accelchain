@@ -5,8 +5,8 @@ import { Button } from '../ui/button'
 
 const Header = () => {
   return (
-    <div className='  w-full h-20  flex items-center justify-end bg-slate-900'>
-        <Button className=' bg-green-500 font-semibold tracking-tighter hover:bg-green-600'>Connect Wallet</Button>
+    <div className='  w-full h-20  flex items-center justify-end bg-slate-900 border-b p-2 border-green-600'>
+        <Button className=' bg-green-500 font-semibold tracking-tighter hover:bg-green-600 rounded-md'>Connect Wallet</Button>
         {/* <ConnectButton/> */}
     </div>
   )

@@ -28,12 +28,12 @@ export const sidebarLinks = [
     {
         label:'Campagins',
         route:'/campagins',
-        imgURL:'assets/create-campaign.svg'
+        imgURL:'/assets/create-campaign.svg'
     },
     {
         label:'About Us',
         route:'/aboutus',
-        imgURL:'assets/withdraw.svg'
+        imgURL:'/assets/withdraw.svg'
     },
     {
         label:'Contact',

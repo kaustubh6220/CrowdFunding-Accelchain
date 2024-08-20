@@ -23,7 +23,7 @@ const Campagins = () => {
           handleCardClick()
         }
           key={index}
-          className={`bg-slate-800 border-slate-900 rounded-2xl shadow-md w-11/12 m-2 hover:bg-slate-700 ${
+          className={`bg-slate-800 border-slate-900 rounded-2xl shadow-md w-11/12 m-2 hover:bg-slate-700 cursor-pointer ${
             index % 3 === 0
               ? 'justify-self-start' // Left align in the first column
               : index % 3 === 1

@@ -24,6 +24,7 @@ export default function RootLayout({
             <Sidebar/>
           </div>
           <div className=" col-span-11 overflow-y-scroll">
+            <Header/>
             {children}
           </div>
         </main>
