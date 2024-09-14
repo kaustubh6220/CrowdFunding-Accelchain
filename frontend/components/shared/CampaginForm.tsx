@@ -75,7 +75,7 @@ const CampaginForm = () => {
             </div>
         
         </div>
-        <Button onClick={(e)=> router.push('/')} className=' bg-green-600 rounded-md mb-4 hover:bg-green-700'>
+        <Button onClick={(e)=> router.push('/')} className=' bg-transparent rounded-md mb-4 hover:border-violet-600 border-2'>
             Submit New Compagin
         </Button>
     </div>

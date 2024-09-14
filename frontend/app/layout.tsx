@@ -19,12 +19,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="h-screen w-screen grid grid-cols-12  bg-slate-900">
+        <main className="h-screen w-screen grid grid-cols-12 bg-gradient-to-tr from-violet-900 from-5% via-slate-900 via-30% to-slate-900 to-90%">
+          <div className=" col-span-12 ">
+            <Header/>
+          </div>
           <div className=" col-span-1">
             <Sidebar/>
           </div>
           <div className=" col-span-11 overflow-y-scroll">
-            <Header/>
             {children}
           </div>
         </main>

@@ -5,34 +5,33 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 import Image from 'next/image'
+import { LayoutDashboard, LogOutIcon } from 'lucide-react'
+import { MdAdd, MdOutlineCampaign, MdPersonOutline } from "react-icons/md";
+import { useRouter } from 'next/navigation'
 
 const SidebarItems = () => {
     const pathname = usePathname()
+    const router = useRouter()
 
     return (
         <>
         <br></br>
         <ul className='flex flex-col items-start ml-4 w-full gap-12 font-mono'>
-            {sidebarLinks.map((link) => {
-                const isActive = pathname === link.route;
-                return (
-                    
-                    <li
-                        key={link.route}
-                        className={`flex justify-center items-center text-[18px] font-normal leading-[24px] ${isActive ? 'text-gray-600' : 'text-white'}`}
-                    >
-                        <Link href={link.route}>
-                            <Image
-                                src={link.imgURL}
-                                alt={link.label}
-                                height={20}
-                                width={20}
-                            />
-                        </Link>
-                    </li>
-                    
-                )
-            })}
+            <div title='Dashboard'>
+                <LayoutDashboard onClick={()=>router.push('/')} className=' text-white hover:text-violet-600 cursor-pointer'/>
+            </div>
+            <div title='Campaigns'>
+                <MdOutlineCampaign onClick={()=>router.push('#campagin')} className=' text-white hover:text-violet-600 text-2xl cursor-pointer'/>
+            </div>
+            <div title='Create Campaign'>
+                <MdAdd onClick={()=>router.push('/createCampaign')} className=' text-white hover:text-violet-600 text-2xl cursor-pointer'/>
+            </div>
+            <div title='Profile'>
+                <MdPersonOutline onClick={()=>router.push('/profile')} className=' text-white hover:text-violet-600 text-2xl cursor-pointer'/>
+            </div>
+            <div title='Logout'>
+                <LogOutIcon onClick={()=>router.push('/')} className=' text-white hover:text-violet-600 cursor-pointer'/>
+            </div>
         </ul>
     </>
     )
