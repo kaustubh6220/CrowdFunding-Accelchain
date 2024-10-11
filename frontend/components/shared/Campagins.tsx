@@ -6,8 +6,12 @@ import Image from 'next/image';
 import { UserIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { getAllCampaigns as fetchAllCampaigns } from '@/services/fundVerse'; 
+import { useWallet } from '@/context/WalletContext'; // Import the useWallet hook
+import FadeLoader from 'react-spinners/FadeLoader'; 
+
 const Campaigns = () => {
   const router = useRouter();
+  const { walletAddress, connectWallet } = useWallet(); // Use the wallet context
   const [campaigns, setCampaigns] = useState<any[]>([]); 
   const [currentPage, setCurrentPage] = useState(1);
   const campaignsPerPage = 6;
@@ -16,6 +20,8 @@ const Campaigns = () => {
 
   useEffect(() => {
     const fetchCampaigns = async () => {
+      if (!walletAddress) return; // Don't fetch campaigns if wallet is not connected
+
       try {
         setLoading(true);
         const campaignsData = await fetchAllCampaigns(); 
@@ -29,7 +35,7 @@ const Campaigns = () => {
     };
 
     fetchCampaigns();
-  }, []);
+  }, [walletAddress]); // Fetch campaigns only if wallet is connected
 
   const ongoingCampaigns = campaigns.filter(campaign => {
     const remainingDays = Math.ceil((Number(campaign.deadline) - Date.now() / 1000) / 86400);
@@ -56,11 +62,28 @@ const Campaigns = () => {
   };
 
   const handleCardClick = (creatorId: string, campaignId: string) => {
+    setLoading(true);
     router.push(`campagins/${creatorId}/${campaignId}`);
   };
 
+  if (!walletAddress) {
+    return (
+      <div className="text-center mt-4 w-full h-full flex flex-col items-center justify-center ">
+        <FadeLoader color="#ffffff" loading={loading} /> 
+        <p className="text-white text-center mt-4">
+          Please connect your wallet to get started.
+        </p>
+      </div>
+    );
+  }
+
   if (loading) {
-    return <p className="text-white text-center mt-4">Loading campaigns...</p>;
+    return (
+      <div className="text-center mt-4 w-full h-full flex flex-col items-center justify-center ">
+        <FadeLoader color="#ffffff" loading={loading} /> 
+        <p className="text-white mt-4">Loading...</p>
+      </div>
+    );
   }
 
   if (error) {
@@ -108,7 +131,7 @@ const Campaigns = () => {
                 <div className="text-right text-gray-400">
                   <p className="text-lg font-medium">
                     {Math.max(
-                      Math.ceil((Number(campaign.deadline) - Date.now() / 1000) / 86400)-1,
+                      Math.ceil((Number(campaign.deadline) - Date.now() / 1000) / 86400) - 1,
                       0
                     )}{' '}
                     Days Left

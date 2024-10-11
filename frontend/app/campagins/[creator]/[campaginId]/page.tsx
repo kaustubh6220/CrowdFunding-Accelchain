@@ -9,6 +9,7 @@ import { MdCampaign, MdPeople, MdPerson, MdPersonOutline } from 'react-icons/md'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FaEthereum } from 'react-icons/fa';
 import { Calendar } from 'lucide-react';
+import FadeLoader from 'react-spinners/FadeLoader';
 
 
 type CampaignId = {
@@ -77,7 +78,12 @@ const CampaignDetails = ({ params: { creator, campaginId } }: CampaignId) => {
   };
 
   if (loading) {
-    return <p className="text-white text-center mt-4">Loading campaign details...</p>;
+    return(         
+    <div className="text-center mt-4 w-full h-full flex flex-col items-center justify-center ">
+        <FadeLoader color="#ffffff" loading={loading} /> 
+        <p className="text-white mt-4">Loading...</p>
+    </div>
+    )
   }
 
   if (error) {

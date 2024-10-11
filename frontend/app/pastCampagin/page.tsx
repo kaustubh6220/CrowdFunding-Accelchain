@@ -6,9 +6,13 @@ import Image from 'next/image';
 import { UserIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { getAllCampaigns as fetchAllCampaigns } from '@/services/fundVerse'; // Import your function
+import { ethers } from 'ethers'; // Import ethers for wallet interaction
+import FadeLoader from 'react-spinners/FadeLoader'; // Import loader component
+import { useWallet } from '@/context/WalletContext'; // Import your wallet context
 
 const Campaigns = () => {
   const router = useRouter();
+  const { walletAddress, connectWallet } = useWallet(); // Use wallet context
   const [campaigns, setCampaigns] = useState<any[]>([]); // State to store fetched campaigns
   const [currentPage, setCurrentPage] = useState(1);
   const campaignsPerPage = 6;
@@ -60,11 +64,31 @@ const Campaigns = () => {
 
   // Function to handle campaign card click
   const handleCardClick = (creatorId: string, campaignId: string) => {
+    setLoading(true);
     router.push(`campagins/${creatorId}/${campaignId}`);
   };
 
+  // If wallet is not connected, show a message to connect wallet
+  if (!walletAddress) {
+    return (
+      <div className="text-center mt-4 flex flex-col items-center justify-center ">
+        <FadeLoader color="#ffffff" />
+        <p className="text-white text-center mt-4">
+          Please connect your wallet to get started.
+        </p>
+      </div>
+    );
+  }
+
   if (loading) {
-    return <p className="text-white text-center mt-4">Loading campaigns...</p>;
+    return (
+      <div className="text-center mt-4 flex flex-col items-center justify-center ">
+        <FadeLoader color="#ffffff" />
+        <p className="text-white text-center mt-4">
+          Loading...
+        </p>
+    </div>
+    );
   }
 
   if (error) {
@@ -77,7 +101,7 @@ const Campaigns = () => {
         Past Campaigns
       </h1>
 
-      <div className="w-full grid grid-cols-3 mt-4">
+      <div className="w-full grid grid-cols-3 mt-4 min-h-72">
         {currentCampaigns.map((campaign, index) => (
           <Card
             key={campaign._id} // Ensure unique key for each campaign

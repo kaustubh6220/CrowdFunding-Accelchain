@@ -20,13 +20,17 @@ import {
 } from '@/services/fundVerse';
 import { MdCampaign } from 'react-icons/md';
 import { FaDonate, FaEthereum } from 'react-icons/fa';
+import LoadingScreen from '@/components/shared/LoadingScreen'; // Import the loading screen component
+import { useRouter } from 'next/navigation'; // Make sure to import useRouter
 
 const Profile = () => {
+  const router = useRouter();
   const [walletAddress, setWalletAddress] = useState<string>('');
   const [campaigns, setCampaigns] = useState<any[]>([]);
   const [totalCampaigns, setTotalCampaigns] = useState<number>(0);
   const [totalDonations, setTotalDonations] = useState<number>(0);
   const [totalFundingReceived, setTotalFundingReceived] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true); // Initialize loading to true
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -44,6 +48,7 @@ const Profile = () => {
 
   const fetchUserData = async (userAddress: string) => {
     try {
+      setLoading(true); // Set loading to true before fetching data
       const campaignsCreated = await getUserCampaigns(userAddress);
       setCampaigns(campaignsCreated);
 
@@ -57,6 +62,8 @@ const Profile = () => {
       setTotalFundingReceived(totalFundingReceivedByUser);
     } catch (err) {
       console.error("Error fetching user data: ", err);
+    } finally {
+      setLoading(false); // Set loading to false after fetching data
     }
   };
 
@@ -64,68 +71,60 @@ const Profile = () => {
     connectWallet();
   }, []);
 
+  const handleCardClick = (creator:string,campaginId:number)=>{
+    setLoading(true);
+    router.push(`campagins/${creator}/${campaginId}`);
+  }
+
+  if (loading) {
+    return <LoadingScreen />; // Show loading screen if loading is true
+  }
+
   return (
     <div>
-
-
       {walletAddress && (
         <div className='p-4'>
-
-          <div className=' w-full flex gap-4 justify-center p-4'>
-            <Card x-chunk="dashboard-01-chunk-0" className='w-full bg-slate-800 text-white border-slate-500'>
+          <div className='w-full flex gap-4 justify-center p-4'>
+            <Card className='w-full bg-slate-800 text-white border-slate-500'>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total 
-                </CardTitle>
+                <CardTitle className="text-sm font-medium">Total</CardTitle>
                 <MdCampaign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{totalCampaigns} Campaigns</div>
-                <p className="text-xs text-muted-foreground">
-                  raised by you
-                </p>
+                <p className="text-xs text-muted-foreground">raised by you</p>
               </CardContent>
             </Card>
-            <Card x-chunk="dashboard-01-chunk-0" className='w-full bg-slate-800 text-white border-slate-500'>
+            <Card className='w-full bg-slate-800 text-white border-slate-500'>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total donation of
-                </CardTitle>
+                <CardTitle className="text-sm font-medium">Total donation of</CardTitle>
                 <FaEthereum className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{ethers.formatEther(totalDonations.toString())} ETH</div>
-                <p className="text-xs text-muted-foreground">
-                  made by you
-                </p>
+                <p className="text-xs text-muted-foreground">made by you</p>
               </CardContent>
             </Card>
-            <Card x-chunk="dashboard-01-chunk-0" className='w-full bg-slate-800 text-white border-slate-500'>
+            <Card className='w-full bg-slate-800 text-white border-slate-500'>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total funding of
-                </CardTitle>
+                <CardTitle className="text-sm font-medium">Total funding of</CardTitle>
                 <FaEthereum className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{ethers.formatEther(totalFundingReceived.toString())} ETH</div>
-                <p className="text-xs text-muted-foreground">
-                  donated to you
-                </p>
+                <p className="text-xs text-muted-foreground">donated to you</p>
               </CardContent>
             </Card>
           </div>
 
-          
-
           <div className='mt-4 p-4'>
             <h3 className='text-white scroll-m-20 text-xl font-semibold tracking-tight'>Campaigns Created:</h3>
-
             <div className="w-full grid grid-cols-3 mt-4">
               {campaigns.length > 0 ? (
                 campaigns.map((campaign, index) => (
                   <Card
-                    key={campaign.id} 
+                    onClick={() => handleCardClick(campaign.creator, campaign.id)}
+                    key={campaign.id}
                     className={`bg-slate-900 border-slate-700 border-2 rounded-md shadow-md w-11/12 m-2 hover:bg-slate-800 cursor-pointer ${
                       index % 3 === 0
                         ? 'justify-self-start'
