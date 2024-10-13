@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FaEthereum } from 'react-icons/fa';
 import { Calendar } from 'lucide-react';
 import FadeLoader from 'react-spinners/FadeLoader';
+import LoadingScreen from '@/components/shared/LoadingScreen';
 
 
 type CampaignId = {
@@ -78,12 +79,7 @@ const CampaignDetails = ({ params: { creator, campaginId } }: CampaignId) => {
   };
 
   if (loading) {
-    return(         
-    <div className="text-center mt-4 w-full h-full flex flex-col items-center justify-center ">
-        <FadeLoader color="#ffffff" loading={loading} /> 
-        <p className="text-white mt-4">Loading...</p>
-    </div>
-    )
+    return <LoadingScreen/>
   }
 
   if (error) {
@@ -159,7 +155,7 @@ const CampaignDetails = ({ params: { creator, campaginId } }: CampaignId) => {
                         <Calendar className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{campaign.daysLeft} Days</div>
+                        <div className="text-2xl font-bold">{campaign.daysLeft+1} Days</div>
                         <p className="text-xs text-muted-foreground">
                         left for the campagin
                         </p>

@@ -16,13 +16,9 @@ const Page = () => {
   const router= useRouter()
   
   return (
-    <div className='flex flex-row w-full gap-4 h-screen p-4 scroll-smooth'> {/* Apply smooth scrolling here */}
-      <div className='flex flex-col w-full h-full'>
-        <div id='campagin' className="mt-2"> 
+        <div id='campagin' className=""> 
           <Campagins/>
         </div>
-      </div>
-    </div>
   )
 }
 

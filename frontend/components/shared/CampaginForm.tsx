@@ -84,6 +84,7 @@ const CampaignForm = () => {
 
   return (
     <>
+    <div className="p-6">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl text-white px-4 pt-6">
         Start a Campaign
       </h1>
@@ -162,6 +163,7 @@ const CampaignForm = () => {
           </div>
         </form>
       </div>
+    </div>
     </>
   );
 };

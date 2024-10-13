@@ -1,4 +1,3 @@
-// context/WalletContext.tsx
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
@@ -6,6 +5,7 @@ import { ethers } from 'ethers';
 interface WalletContextType {
   walletAddress: string | null;
   connectWallet: () => Promise<void>;
+  disconnectWallet: () => void;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -31,6 +31,14 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
+  // Function to disconnect wallet
+  const disconnectWallet = () => {
+    setWalletAddress(null); // Clear wallet address in frontend
+    if (typeof window.ethereum !== 'undefined') {
+      window.location.reload();  // Reload the page to reset connection
+    }
+  };
+
   // Check if wallet is connected when the app loads
   useEffect(() => {
     const checkIfWalletIsConnected = async () => {
@@ -52,7 +60,7 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, []);
 
   return (
-    <WalletContext.Provider value={{ walletAddress, connectWallet }}>
+    <WalletContext.Provider value={{ walletAddress, connectWallet, disconnectWallet }}>
       {children}
     </WalletContext.Provider>
   );

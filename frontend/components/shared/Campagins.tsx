@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { getAllCampaigns as fetchAllCampaigns } from '@/services/fundVerse'; 
 import { useWallet } from '@/context/WalletContext'; // Import the useWallet hook
 import FadeLoader from 'react-spinners/FadeLoader'; 
+import LoadingScreen from './LoadingScreen';
 
 const Campaigns = () => {
   const router = useRouter();
@@ -78,12 +79,7 @@ const Campaigns = () => {
   }
 
   if (loading) {
-    return (
-      <div className="text-center mt-4 w-full h-full flex flex-col items-center justify-center ">
-        <FadeLoader color="#ffffff" loading={loading} /> 
-        <p className="text-white mt-4">Loading...</p>
-      </div>
-    );
+    return <LoadingScreen/>
   }
 
   if (error) {
@@ -92,6 +88,7 @@ const Campaigns = () => {
 
   return (
     <>
+    <div className=' p-6'>
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl text-white px-4 pt-6">
         Ongoing Campaigns
       </h1>
@@ -131,7 +128,7 @@ const Campaigns = () => {
                 <div className="text-right text-gray-400">
                   <p className="text-lg font-medium">
                     {Math.max(
-                      Math.ceil((Number(campaign.deadline) - Date.now() / 1000) / 86400) - 1,
+                      Math.ceil((Number(campaign.deadline) - Date.now() / 1000) / 86400) ,
                       0
                     )}{' '}
                     Days Left
@@ -165,6 +162,7 @@ const Campaigns = () => {
           Next
         </button>
       </div>
+    </div>
     </>
   );
 };

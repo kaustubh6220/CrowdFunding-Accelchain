@@ -144,10 +144,10 @@ const Profile = () => {
                       <CardTitle className="scroll-m-20 text-xl font-semibold tracking-tight text-white">
                         {campaign.title}
                       </CardTitle>
-                      <CardDescription className="text-gray-300 mt-2 line-clamp-1">
+                      <CardDescription className="text-gray-300 mt-2 line-clamp-3">
                         {campaign.description}...
                       </CardDescription>
-                      <CardContent className="mt-4 w-full grid grid-cols-2 gap-4">
+                      <CardContent className="mt-4 w-full grid grid-cols-2 gap-4 p-0">
                         <div className="text-gray-400">
                           <p className="text-lg font-medium">{campaign.amountCollected} ETH</p>
                           <p className="text-lg font-medium">raised of {campaign.targetAmount} ETH</p>

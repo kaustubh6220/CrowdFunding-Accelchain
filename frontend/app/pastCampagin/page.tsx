@@ -5,26 +5,27 @@ import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/com
 import Image from 'next/image';
 import { UserIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { getAllCampaigns as fetchAllCampaigns } from '@/services/fundVerse'; // Import your function
-import { ethers } from 'ethers'; // Import ethers for wallet interaction
-import FadeLoader from 'react-spinners/FadeLoader'; // Import loader component
-import { useWallet } from '@/context/WalletContext'; // Import your wallet context
+import { getAllCampaigns as fetchAllCampaigns } from '@/services/fundVerse'; 
+import { useWallet } from '@/context/WalletContext'
+import FadeLoader from 'react-spinners/FadeLoader'; 
+import LoadingScreen from '@/components/shared/LoadingScreen';
 
 const Campaigns = () => {
   const router = useRouter();
-  const { walletAddress, connectWallet } = useWallet(); // Use wallet context
-  const [campaigns, setCampaigns] = useState<any[]>([]); // State to store fetched campaigns
+  const { walletAddress, connectWallet } = useWallet(); 
+  const [campaigns, setCampaigns] = useState<any[]>([]); 
   const [currentPage, setCurrentPage] = useState(1);
   const campaignsPerPage = 6;
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState<string | null>(null); // Error state
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState<string | null>(null); 
 
-  // Fetch campaigns on component mount
   useEffect(() => {
     const fetchCampaigns = async () => {
+      if (!walletAddress) return;
+
       try {
         setLoading(true);
-        const campaignsData = await fetchAllCampaigns(); // Fetch campaigns from the contract
+        const campaignsData = await fetchAllCampaigns(); 
         console.log(campaignsData);
         setCampaigns(campaignsData);
         setLoading(false);
@@ -35,9 +36,8 @@ const Campaigns = () => {
     };
 
     fetchCampaigns();
-  }, []);
+  }, [walletAddress]); 
 
-  // Filter ongoing campaigns based on deadline
   const ongoingCampaigns = campaigns.filter(campaign => {
     const remainingDays = Math.ceil((Number(campaign.deadline) - Date.now() / 1000) / 86400);
     return remainingDays <= 0;
@@ -62,17 +62,15 @@ const Campaigns = () => {
     }
   };
 
-  // Function to handle campaign card click
   const handleCardClick = (creatorId: string, campaignId: string) => {
     setLoading(true);
     router.push(`campagins/${creatorId}/${campaignId}`);
   };
 
-  // If wallet is not connected, show a message to connect wallet
   if (!walletAddress) {
     return (
-      <div className="text-center mt-4 flex flex-col items-center justify-center ">
-        <FadeLoader color="#ffffff" />
+      <div className="text-center mt-4 w-full h-full flex flex-col items-center justify-center ">
+        <FadeLoader color="#ffffff" loading={loading} /> 
         <p className="text-white text-center mt-4">
           Please connect your wallet to get started.
         </p>
@@ -81,14 +79,7 @@ const Campaigns = () => {
   }
 
   if (loading) {
-    return (
-      <div className="text-center mt-4 flex flex-col items-center justify-center ">
-        <FadeLoader color="#ffffff" />
-        <p className="text-white text-center mt-4">
-          Loading...
-        </p>
-    </div>
-    );
+    return <LoadingScreen/>
   }
 
   if (error) {
@@ -97,15 +88,16 @@ const Campaigns = () => {
 
   return (
     <>
+    <div className='p-6'>
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-3xl text-white px-4 pt-6">
         Past Campaigns
       </h1>
 
-      <div className="w-full grid grid-cols-3 mt-4 min-h-72">
+      <div className="w-full grid grid-cols-3 mt-4">
         {currentCampaigns.map((campaign, index) => (
           <Card
-            key={campaign._id} // Ensure unique key for each campaign
-            onClick={() => handleCardClick(campaign.creator, campaign.id)} // Add click handler
+            key={campaign._id} 
+            onClick={() => handleCardClick(campaign.creator, campaign.id)} 
             className={`bg-slate-900 border-slate-700 border-2 rounded-md shadow-md w-11/12 m-2 hover:bg-slate-800 cursor-pointer ${
               index % 3 === 0
                 ? 'justify-self-start'
@@ -125,10 +117,10 @@ const Campaigns = () => {
               <CardTitle className="scroll-m-20 text-xl font-semibold tracking-tight text-white">
                 {campaign.title}
               </CardTitle>
-              <CardDescription className="text-gray-300 mt-2 line-clamp-1">
+              <CardDescription className="text-gray-300 mt-2 line-clamp-3">
                 {campaign.description}...
               </CardDescription>
-              <CardContent className="mt-4 w-full grid grid-cols-2 gap-4">
+              <CardContent className="mt-4 w-full grid grid-cols-2 gap-4 p-0">
                 <div className="text-gray-400">
                   <p className="text-lg font-medium">{campaign.amountCollected} ETH</p>
                   <p className="text-lg font-medium">raised of {campaign.targetAmount} ETH</p>
@@ -136,7 +128,7 @@ const Campaigns = () => {
                 <div className="text-right text-gray-400">
                   <p className="text-lg font-medium">
                     {Math.max(
-                      Math.ceil((Number(campaign.deadline) - Date.now() / 1000) / 86400)-1,
+                      Math.ceil((Number(campaign.deadline) - Date.now() / 1000) / 86400) ,
                       0
                     )}{' '}
                     Days Left
@@ -154,7 +146,7 @@ const Campaigns = () => {
         ))}
       </div>
 
-      <div className="w-full flex justify-between mt-4 p-2">
+      <div className="w-full flex justify-between mt-4">
         <button
           onClick={goToPreviousPage}
           className="text-white bg-gray-800 px-4 py-2 rounded-md"
@@ -170,6 +162,7 @@ const Campaigns = () => {
           Next
         </button>
       </div>
+    </div>
     </>
   );
 };
