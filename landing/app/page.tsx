@@ -69,7 +69,7 @@ const Page = () => {
           </div>  
 
           <div className=' flex gap-8 mt-8 w-full justify-center'>
-              <Card className='w-1/4 bg-transparent text-white border-emerald-500 rounded-md '>
+              <Card className='w-fit px-6 bg-transparent text-white border-emerald-500 rounded-md '>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   {/* <CardTitle className="text-sm font-medium text-center w-full">Total</CardTitle> */}
                 </CardHeader>
@@ -79,13 +79,13 @@ const Page = () => {
                 </CardContent>
               </Card>
 
-              <Card className='w-1/4 bg-transparent text-white border-emerald-500 rounded-md '>
+              <Card className='w-fit bg-transparent text-white border-emerald-500 rounded-md '>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   {/* <CardTitle className="text-sm font-medium w-full text-center">Total</CardTitle> */}
                 </CardHeader>
                 <CardContent className=' w-full text-center'>
-                  <div className="text-2xl font-bold">{loading ? "Loading..." : `Total ${totalFunding ?? 0} Ethereum`}</div>
-                  <p className="text-sm text-muted-foreground">funding raised on out platform</p>
+                  <div className="w-full text-2xl font-bold">{loading ? "Loading..." : `Total ${totalFunding ?? 0} Ethereum`}</div>
+                  <p className=" w-full text-sm text-muted-foreground">funding raised on out platform</p>
                 </CardContent>
               </Card>
 
